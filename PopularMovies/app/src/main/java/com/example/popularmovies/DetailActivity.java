@@ -84,13 +84,22 @@ public class DetailActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (mfavoriteId == DEFAULT_TASK_ID) {
-                                    mDb.movieDAO().insertMovie(favorites);
+                                    Favorites fav =  mDb.movieDAO().loadTasksById(movieId);
+                                    if(fav == null){
+                                        mDb.movieDAO().insertMovie(favorites);
+                                    }
                                 }
                             }
                         });
                     } else{
                         bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border_white_24dp));
-                        mDb.movieDAO().deleteMovie(favorites);
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDb.movieDAO().deleteMovie(favorites);
+                            }
+                        });
+
                     }
 
             }
@@ -109,7 +118,7 @@ public class DetailActivity extends AppCompatActivity {
             bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border_white_24dp));
             bookmark.setChecked(false);
         }
-        new fetchYoutubeLinks();
+        new fetchYoutubeLinks().execute();
     }
 
 private void data(){
