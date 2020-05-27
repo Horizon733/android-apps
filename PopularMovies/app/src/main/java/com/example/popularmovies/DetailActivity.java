@@ -84,7 +84,7 @@ public class DetailActivity extends AppCompatActivity {
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.loading)
                 .into(moviePosterBD);
-         favorites = new Favorites(name,movieId);
+         favorites = new Favorites(movieId,name,poster,overview,date,ratings,posterBD);
         final ToggleButton bookmark = findViewById(R.id.bookmark_movie);
         bookmark.setChecked(false);
         bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border_white_24dp));
@@ -94,8 +94,7 @@ public class DetailActivity extends AppCompatActivity {
 
                     if (isChecked ) {
                         bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_red_24dp));
-                        Toast.makeText(DetailActivity.this, "" + movieName.getText(), Toast.LENGTH_SHORT).show();
-                        Log.v("Movie Id",""+movieId);
+
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
@@ -103,6 +102,7 @@ public class DetailActivity extends AppCompatActivity {
                                     Favorites fav =  mDb.movieDAO().loadTasksById(movieId);
                                     if(fav == null){
                                         mDb.movieDAO().insertMovie(favorites);
+                                        Log.e("Movie Id Insert",""+movieId);
                                     }
                                 }
                             }
@@ -113,6 +113,7 @@ public class DetailActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 mDb.movieDAO().deleteMovie(favorites);
+                                Log.e("Movie Id Delete",""+movieId);
                             }
                         });
 

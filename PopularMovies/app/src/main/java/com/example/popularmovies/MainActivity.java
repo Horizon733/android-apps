@@ -121,14 +121,7 @@ private void setupViewModel(){
     viewModel.getMovies().observe(this, new Observer<List<Favorites>>() {
         @Override
         public void onChanged(List<Favorites> favorites) {
-            if(favorites.isEmpty()){
-                mEmptyStateTextView.setText("No favorites");
-                ConstraintLayout parentLayout = findViewById(R.id.layout);
-                parentLayout.setBackgroundColor(Color.parseColor("#ffffff"));
-            }
-            else {
                 mMovieAdapter.setMovieData(favorites);
-            }
         }
     });
 }

@@ -47,33 +47,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        Movie currentMovie = mMovieData.get(position);
-       if(mPrefrences == Constants.FAVORITES ){
-           Log.e("Movie",""+mPrefrences);
-           Favorites fav = mFavoritesMovies.get(position);
-           if (fav.getMovieId() == currentMovie.getMovieId()) {
-               holder.mMoviename.setText(currentMovie.getMovieName());
-               Log.e("Movie Name", "" + currentMovie.getMovieName());
-               Picasso.with(mContext)
-                       .load(currentMovie.getMoviePoster())
-                       .fit()
-                       .error(R.drawable.loading)
-                       .placeholder(R.drawable.loading)
-                       .into(holder.mMoviePoster);
-           }
-           else return;
-       }
-        else {
-
-               holder.mMoviename.setText(currentMovie.getMovieName());
-               Picasso.with(mContext)
-                       .load(currentMovie.getMoviePoster())
-                       .fit()
-                       .error(R.drawable.loading)
-                       .placeholder(R.drawable.loading)
-                       .into(holder.mMoviePoster);
-           }
-
+        if(mPrefrences == Constants.FAVORITES) {
+            Favorites currentMovie = mFavoritesMovies.get(position);
+            holder.mMoviename.setText(currentMovie.getMovieName());
+            Log.e("Favorite Movie Name", "" + currentMovie.getMovieName());
+            Picasso.with(mContext)
+                    .load(currentMovie.getMoviePoster())
+                    .fit()
+                    .error(R.drawable.loading)
+                    .placeholder(R.drawable.loading)
+                    .into(holder.mMoviePoster);
+        }
+        else if(mPrefrences == null) {
+            Movie currentMovie = mMovieData.get(position);
+            holder.mMoviename.setText(currentMovie.getMovieName());
+            Log.e("Movie Name", "" + currentMovie.getMovieName());
+            Picasso.with(mContext)
+                    .load(currentMovie.getMoviePoster())
+                    .fit()
+                    .error(R.drawable.loading)
+                    .placeholder(R.drawable.loading)
+                    .into(holder.mMoviePoster);
+        }
     }
 
     @Override
@@ -84,7 +79,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void setMovieData(List<Favorites> movies){
-        mFavoritesMovies = movies;
+        this.mFavoritesMovies = movies;
+        notifyDataSetChanged();
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
