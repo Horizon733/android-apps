@@ -16,15 +16,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.popularmovies.Adapters.MovieAdapter;
+import com.example.popularmovies.database.Favorites;
+import com.example.popularmovies.model.Constants;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.utils.JsonUtils;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private final int NUM_OF_COLUMNS = 2;
     private static String MOVIE_DB = "https://api.themoviedb.org/3/movie/";
     String prefrences = "popular";
+    public TextView mEmptyStateTextView;
     List<Movie> movieSearchResults = new ArrayList<>();
     ProgressBar progressBar;
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
          mLayoutManager = new GridLayoutManager(getApplicationContext(),NUM_OF_COLUMNS);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        TextView mEmptyStateTextView = findViewById(R.id.empty_view_text);
+         mEmptyStateTextView = findViewById(R.id.empty_view_text);
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         ConstraintLayout parentLayout = findViewById(R.id.layout);
@@ -106,15 +108,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 new FetchDataAsyncTask().execute(prefrences);
                 return true;
             case R.id.favorites:
-                Intent favoritesMovies = new Intent(MainActivity.this,FavoritesActivity.class);
-                startActivity(favoritesMovies);
+                prefrences = Constants.FAVORITES;
+                setupViewModel();
                 return true;
         }
         return super.onOptionsItemSelected(item);
 
     }
 
-
+private void setupViewModel(){
+    MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+    viewModel.getMovies().observe(this, new Observer<List<Favorites>>() {
+        @Override
+        public void onChanged(List<Favorites> favorites) {
+            if(favorites.isEmpty()){
+                mEmptyStateTextView.setText("No favorites");
+                ConstraintLayout parentLayout = findViewById(R.id.layout);
+                parentLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
+            else {
+                mMovieAdapter.setMovieData(favorites);
+            }
+        }
+    });
+}
 
     public class FetchDataAsyncTask extends AsyncTask<String, Void, List<Movie>> {
         public FetchDataAsyncTask() {
@@ -144,9 +161,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         protected void onPostExecute(List<Movie> movies) {
-            mMovieAdapter = new MovieAdapter(MainActivity.this,  MainActivity.this,movies);
-            mRecyclerView.setAdapter(mMovieAdapter);
-            progressBar.setVisibility(View.GONE);
+            if(prefrences == Constants.FAVORITES){
+                mMovieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movies,prefrences);
+                mRecyclerView.setAdapter(mMovieAdapter);
+                progressBar.setVisibility(View.GONE);
+            }else {
+                mMovieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movies, null);
+                mRecyclerView.setAdapter(mMovieAdapter);
+                progressBar.setVisibility(View.GONE);
+            }
+
         }
     }
 

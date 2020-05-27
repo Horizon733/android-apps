@@ -18,7 +18,7 @@ public class MainViewModel extends AndroidViewModel {
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         favorites = database.movieDAO().loadAllMovies();
     }
-    public LiveData<List<Favorites>> getTasks(){
+    public LiveData<List<Favorites>> getMovies(){
         return favorites;
     }
 }
