@@ -116,6 +116,7 @@ public class JsonUtils {
             baseUri = Uri.parse(stringUrl + prefrences);
         }
         Uri.Builder uriBuilder = baseUri.buildUpon();
+        
         String api_key = "<api-key>";
         uriBuilder.appendQueryParameter("api_key", api_key)
                 .appendQueryParameter("language", "en-US")

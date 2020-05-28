@@ -23,7 +23,7 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     List<Movie> mMovieData;
     Context mContext;
-    List<Favorites> mFavoritesMovies;
+    public List<Favorites> mFavoritesMovies;
     String mPrefrences;
     private final MovieAdapterOnClickHandler mClickHandler;
 
@@ -79,7 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void setMovieData(List<Favorites> movies){
-        this.mFavoritesMovies = movies;
+        mFavoritesMovies = movies;
         notifyDataSetChanged();
     }
 

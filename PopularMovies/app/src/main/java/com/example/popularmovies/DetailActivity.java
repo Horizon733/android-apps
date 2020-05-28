@@ -102,7 +102,7 @@ public class DetailActivity extends AppCompatActivity {
                                     Favorites fav =  mDb.movieDAO().loadTasksById(movieId);
                                     if(fav == null){
                                         mDb.movieDAO().insertMovie(favorites);
-                                        Log.e("Movie Id Insert",""+movieId);
+                                        Log.e("Movie Id Insert",""+favorites.getMovieId());
                                     }
                                 }
                             }
