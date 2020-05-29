@@ -19,7 +19,7 @@
         android:id="@+id/tv_trailer_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:gravity="center"
         android:layout_margin="8dp"
         app:layout_constraintEnd_toEndOf="@+id/trailer_thumbnail"
@@ -27,9 +27,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trailer_thumbnail"
-        android:textColor="@android:color/white"
         tools:text="Official Trailer Example"
-        tools:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"/>
     <ImageButton
         android:id="@+id/youtube_play"
         android:layout_width="wrap_content"

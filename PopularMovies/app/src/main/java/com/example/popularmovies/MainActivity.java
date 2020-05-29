@@ -1,7 +1,6 @@
 package com.example.popularmovies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -16,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
@@ -25,14 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.popularmovies.Adapters.MovieAdapter;
 import com.example.popularmovies.database.Favorites;
-import com.example.popularmovies.model.Constants;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     MovieAdapter mMovieAdapter;
     private GridLayoutManager mLayoutManager;
@@ -42,19 +41,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public TextView mEmptyStateTextView;
     List<Movie> movieSearchResults = new ArrayList<>();
     ProgressBar progressBar;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        actionBar = getSupportActionBar();
         mRecyclerView = findViewById(R.id.list);
-
         mRecyclerView.setHasFixedSize(true);
 
-         mLayoutManager = new GridLayoutManager(getApplicationContext(),NUM_OF_COLUMNS);
+        mLayoutManager = new GridLayoutManager(getApplicationContext(), NUM_OF_COLUMNS);
         mRecyclerView.setLayoutManager(mLayoutManager);
-         mEmptyStateTextView = findViewById(R.id.empty_view_text);
+        mEmptyStateTextView = findViewById(R.id.empty_view_text);
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         ConstraintLayout parentLayout = findViewById(R.id.layout);
@@ -70,45 +69,35 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
             parentLayout.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-        Bundle  queryBundle = new Bundle();
-        queryBundle.putString(MOVIE_DB,prefrences);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(MOVIE_DB, prefrences);
 
     }
-    public void onClick(int position){
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
 
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, position);
-        intentToStartDetailActivity.putExtra("movieId",movieSearchResults.get(position).getMovieId());
-        intentToStartDetailActivity.putExtra("moviePosterBD", movieSearchResults.get(position).getBackDropImage());
-        intentToStartDetailActivity.putExtra("movieName", movieSearchResults.get(position).getMovieName());
-        intentToStartDetailActivity.putExtra("moviePoster", movieSearchResults.get(position).getMoviePoster());
-        intentToStartDetailActivity.putExtra("releaseDate", movieSearchResults.get(position).getReleaseDate());
-        intentToStartDetailActivity.putExtra("overview", movieSearchResults.get(position).getOverview());
-        intentToStartDetailActivity.putExtra("ratings", movieSearchResults.get(position).getVoteAverage());
-        startActivity(intentToStartDetailActivity);
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
         // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.main,menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.popular:
-                prefrences = "popular";
+                prefrences = getString(R.string.popular_movie);
+                actionBar.setTitle(getString(R.string.app_name));
                 new FetchDataAsyncTask().execute(prefrences);
                 return true;
             case R.id.top_rated:
-                prefrences = "top_rated";
+                prefrences = getString(R.string.top_rated_movie);
+                actionBar.setTitle(getString(R.string.top_rated));
                 new FetchDataAsyncTask().execute(prefrences);
                 return true;
             case R.id.favorites:
-                prefrences = Constants.FAVORITES;
+                prefrences = getString(R.string.favorites);
+                actionBar.setTitle(getString(R.string.favorites));
                 setupViewModel();
                 return true;
         }
@@ -116,15 +105,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-private void setupViewModel(){
-    MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-    viewModel.getMovies().observe(this, new Observer<List<Favorites>>() {
-        @Override
-        public void onChanged(List<Favorites> favorites) {
-                mMovieAdapter.setMovieData(favorites);
-        }
-    });
-}
+
+    private void setupViewModel() {
+        MainViewModel viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel.getMovies().observe(this, new Observer<List<Favorites>>() {
+            @Override
+            public void onChanged(List<Favorites> favorites) {
+                List<Movie> mMovieData = new ArrayList<>();
+                for (Favorites fav : favorites) {
+                    Movie m = new Movie(fav.getMovieId()
+                            , fav.getMovieName()
+                            , fav.getMoviePoster()
+                            , fav.getOverview()
+                            , fav.getReleaseDate()
+                            , Double.parseDouble(fav.getVoteAverage())
+                            , fav.getBackDropImage());
+                    mMovieData.add(m);
+                }
+                new FetchDataAsyncTask().onPostExecute(mMovieData);
+            }
+        });
+    }
 
     public class FetchDataAsyncTask extends AsyncTask<String, Void, List<Movie>> {
         public FetchDataAsyncTask() {
@@ -134,7 +135,7 @@ private void setupViewModel(){
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-             progressBar = findViewById(R.id.progress);
+            progressBar = findViewById(R.id.progress);
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -142,7 +143,7 @@ private void setupViewModel(){
         protected List<Movie> doInBackground(String... params) {
             // Holds data returned from the API
 
-            Log.e("doInBackground","Gone");
+            Log.e("doInBackground", "Gone");
 
             movieSearchResults = JsonUtils.fetchMovieData(MOVIE_DB, params[0]);
 
@@ -153,17 +154,11 @@ private void setupViewModel(){
             return movieSearchResults;
         }
 
-        protected void onPostExecute(List<Movie> movies) {
-            if(prefrences == Constants.FAVORITES){
-                mMovieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movies,prefrences);
-                mRecyclerView.setAdapter(mMovieAdapter);
-                progressBar.setVisibility(View.GONE);
-            }else {
-                mMovieAdapter = new MovieAdapter(MainActivity.this, MainActivity.this, movies, null);
-                mRecyclerView.setAdapter(mMovieAdapter);
-                progressBar.setVisibility(View.GONE);
-            }
 
+        protected void onPostExecute(List<Movie> movies) {
+            mMovieAdapter = new MovieAdapter(MainActivity.this, movies);
+            mRecyclerView.setAdapter(mMovieAdapter);
+            progressBar.setVisibility(View.GONE);
         }
     }
 

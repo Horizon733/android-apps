@@ -37,16 +37,16 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     @Override
     public void onBindViewHolder(@NonNull ReviewsViewAdapter holder, int position) {
         final Reviews currentReviews = mReviewsData.get(position);
-            holder.mAuthor.setText(currentReviews.getauthor());
-            holder.mContent.setText(currentReviews.getcontent());
-            holder.mContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Uri link = Uri.parse(currentReviews.getReviewLink());
-                    Intent startReview = new Intent(Intent.ACTION_VIEW, link);
-                    mContext.startActivity(startReview);
-                }
-            });
+        holder.mAuthor.setText(currentReviews.getauthor());
+        holder.mContent.setText(currentReviews.getcontent());
+        holder.mContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri link = Uri.parse(currentReviews.getReviewLink());
+                Intent startReview = new Intent(Intent.ACTION_VIEW, link);
+                mContext.startActivity(startReview);
+            }
+        });
     }
 
     @Override

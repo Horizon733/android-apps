@@ -1,6 +1,7 @@
 package com.example.popularmovies;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.popularmovies.Adapters.ReviewsAdapter;
@@ -55,12 +55,16 @@ public class DetailActivity extends AppCompatActivity {
         mDb = AppDatabase.getInstance(getApplicationContext());
         data();
 
+    ActionBar actionBar = getSupportActionBar();
+
         final int movieId =  getIntent().getIntExtra("movieId",DEFAULT_TASK_ID);
         commonLink += movieId;
         String name = getIntent().getStringExtra("movieName");
 
         final TextView movieName = findViewById(R.id.movie_name_tv);
         movieName.setText(name);
+        actionBar.setTitle(movieName.getText());
+
         TextView moviePlot = findViewById(R.id.movie_plot_tv);
         moviePlot.setText(overview);
         TextView movieRatings = findViewById(R.id.movie_ratings_tv);
@@ -87,13 +91,13 @@ public class DetailActivity extends AppCompatActivity {
          favorites = new Favorites(movieId,name,poster,overview,date,ratings,posterBD);
         final ToggleButton bookmark = findViewById(R.id.bookmark_movie);
         bookmark.setChecked(false);
-        bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border_white_24dp));
+        bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_bookmark_filled));
         bookmark.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
                     if (isChecked ) {
-                        bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_red_24dp));
+                        bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_bookmark_filled));
 
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
@@ -108,7 +112,7 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         });
                     } else{
-                        bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border_white_24dp));
+                        bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_bookmark_border));
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
@@ -126,13 +130,13 @@ public class DetailActivity extends AppCompatActivity {
         if(fav != null) {
              id = fav.getMovieId();
             if(id == movieId){
-                bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_red_24dp));
+                bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_bookmark_border));
                 bookmark.setChecked(true);
             }
         }
 
         if(id == 0) {
-            bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border_white_24dp));
+            bookmark.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_bookmark_border));
             bookmark.setChecked(false);
         }
         mYoutubeRecyclerView = findViewById(R.id.movie_trailers);

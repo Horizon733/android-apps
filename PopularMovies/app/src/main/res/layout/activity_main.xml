@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/layout"
     android:gravity="center"
-    android:background="@drawable/background"
+    android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,13 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-<ProgressBar
-    android:id="@+id/progress"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    style="@style/Widget.AppCompat.ProgressBar"
-    android:visibility="gone"
-    android:gravity="center"/>
 
     <LinearLayout
         android:id="@+id/empty_view"
@@ -51,5 +44,18 @@
             android:layout_marginTop="13dp"
             android:textAppearance="?android:textAppearanceMedium"
             tools:text="No internet" />
+
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

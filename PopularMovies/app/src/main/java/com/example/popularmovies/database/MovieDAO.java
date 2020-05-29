@@ -11,7 +11,8 @@ import java.util.List;
 @Dao
 public interface MovieDAO {
     @Query("SELECT * FROM favorites")
-    LiveData<List<Favorites>>loadAllMovies();
+    LiveData<List<Favorites>> loadAllMovies();
+
     @Insert
     void insertMovie(Favorites favorites);
 

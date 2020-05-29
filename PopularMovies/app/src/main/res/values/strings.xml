@@ -6,4 +6,6 @@
     <string name="favorites">Favorites</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
+    <string name="popular_movie">popular</string>
+    <string name="top_rated_movie">top_rated</string>
 </resources>

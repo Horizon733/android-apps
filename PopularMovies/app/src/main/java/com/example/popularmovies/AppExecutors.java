@@ -15,14 +15,15 @@ public class AppExecutors {
     private final Executor mainThread;
     private final Executor networkIO;
 
-    private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread){
+    private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
         this.mainThread = mainThread;
     }
-    public static AppExecutors getInstance(){
-        if (sInstance == null){
-            synchronized (LOCK){
+
+    public static AppExecutors getInstance() {
+        if (sInstance == null) {
+            synchronized (LOCK) {
                 sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
                         Executors.newFixedThreadPool(3),
                         new MainThreadExecutor());
@@ -30,12 +31,21 @@ public class AppExecutors {
         }
         return sInstance;
     }
-    public Executor diskIO(){return diskIO; }
-    public Executor getNetworkIO(){ return networkIO; }
-    public Executor getMainThread(){ return mainThread; }
+
+    public Executor diskIO() {
+        return diskIO;
+    }
+
+    public Executor getNetworkIO() {
+        return networkIO;
+    }
+
+    public Executor getMainThread() {
+        return mainThread;
+    }
 
 
-    public static class MainThreadExecutor implements Executor{
+    public static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
         @Override

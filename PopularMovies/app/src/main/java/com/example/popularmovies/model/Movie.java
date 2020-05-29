@@ -8,7 +8,7 @@ public class Movie {
     private String mOverview;
     private String mReleaseDate;
     private Double mVoteAverage;
-    private final String POSTER_URL = "https://image.tmdb.org/t/p/w185";
+    public static final String POSTER_URL = "https://image.tmdb.org/t/p/w185";
     public Movie(){
     }
     public Movie(int movieId,String movieName,String moviePoster,String overview,String releaseDate,Double voteAverage,String backDropImage){

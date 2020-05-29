@@ -23,16 +23,16 @@ public class TrailerAdapater extends RecyclerView.Adapter<TrailerAdapater.Traile
     List<YoutubeTrailer> mTrailerData;
     Context mContext;
 
-    public TrailerAdapater(Context context,List<YoutubeTrailer> trailers){
-            mContext = context;
-            mTrailerData = trailers;
+    public TrailerAdapater(Context context, List<YoutubeTrailer> trailers) {
+        mContext = context;
+        mTrailerData = trailers;
     }
 
     @NonNull
     @Override
     public TrailerViewAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layoutIdForListItem = R.layout.trailer_list_item;
-        View v = LayoutInflater.from(mContext).inflate(layoutIdForListItem,parent,false);
+        View v = LayoutInflater.from(mContext).inflate(layoutIdForListItem, parent, false);
         return new TrailerAdapater.TrailerViewAdapter(v);
     }
 
@@ -50,7 +50,7 @@ public class TrailerAdapater extends RecyclerView.Adapter<TrailerAdapater.Traile
             @Override
             public void onClick(View view) {
                 Uri link = Uri.parse(currentTrailer.getTrailerLink());
-                Intent startYoutube = new Intent(Intent.ACTION_VIEW,link);
+                Intent startYoutube = new Intent(Intent.ACTION_VIEW, link);
                 mContext.startActivity(startYoutube);
             }
         });
@@ -58,14 +58,17 @@ public class TrailerAdapater extends RecyclerView.Adapter<TrailerAdapater.Traile
 
     @Override
     public int getItemCount() {
-        if(mTrailerData == null ||mTrailerData.size() == 0){ return -1;}
+        if (mTrailerData == null || mTrailerData.size() == 0) {
+            return -1;
+        }
         return mTrailerData.size();
     }
 
-    public class TrailerViewAdapter extends RecyclerView.ViewHolder{
+    public class TrailerViewAdapter extends RecyclerView.ViewHolder {
         public ImageView mThumbnail;
         public TextView mTrailerTitle;
         public ImageButton mYoutubePlay;
+
         public TrailerViewAdapter(@NonNull View itemView) {
             super(itemView);
             mThumbnail = itemView.findViewById(R.id.trailer_thumbnail);

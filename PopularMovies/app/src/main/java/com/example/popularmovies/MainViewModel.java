@@ -13,12 +13,14 @@ import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
     LiveData<List<Favorites>> favorites;
+
     public MainViewModel(@NonNull Application application) {
         super(application);
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         favorites = database.movieDAO().loadAllMovies();
     }
-    public LiveData<List<Favorites>> getMovies(){
+
+    public LiveData<List<Favorites>> getMovies() {
         return favorites;
     }
 }

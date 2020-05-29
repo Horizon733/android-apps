@@ -9,30 +9,24 @@
     <TextView
         android:id="@+id/author"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
+        style="@style/Reviews"
         android:gravity="start"
-        android:textColor="@android:color/white"
         android:textAlignment="viewStart"
         android:text="No Reviews!"
-        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toTopOf="@+id/content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Author" />
+        tools:text="@tools:sample/first_names" />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Reviews"
         android:ellipsize="end"
-        android:textColor="@android:color/white"
         android:maxLines="3"
-        android:textSize="18sp"
-        android:layout_marginStart="10dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/author"
-        tools:text="The movie is awesome and I love it because this is a review demo :D" />
+        tools:text="@tools:sample/lorem/random" />
 </androidx.constraintlayout.widget.ConstraintLayout>
