@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.squawks_recycler_view);
+        mRecyclerView = findViewById(R.id.squawks_recycler_view);
 
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

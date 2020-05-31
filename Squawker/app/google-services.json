@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "568348929515-ief37nvusvmkf124aubumipdr1d3lh8n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.squawker",
+            "certificate_hash": "caee0e0bcd3adde8626ffd3a3d91bef9680b016f"
+          }
+        },
+        {
           "client_id": "568348929515-7a6568jieductsq2t8q01hh8r6q6niqj.apps.googleusercontent.com",
           "client_type": 3
         }
