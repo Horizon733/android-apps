@@ -34,7 +34,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     annotationProcessor 'net.simonvt.schematic:schematic-compiler:0.6.3'
-    compile 'net.simonvt.schematic:schematic:0.6.3'
+    implementation 'net.simonvt.schematic:schematic:0.6.3'
     implementation 'androidx.preference:preference:1.0.0-rc02'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
 
