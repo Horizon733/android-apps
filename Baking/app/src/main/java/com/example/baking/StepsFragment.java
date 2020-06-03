@@ -37,7 +37,7 @@ List<Steps> stepsList;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
-        StepAdapter mAdapter = new StepAdapter(stepsList);
+        StepAdapter mAdapter = new StepAdapter(getContext(),stepsList);
         RecyclerView mRecyclerView = rootView.findViewById(R.id.steps_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

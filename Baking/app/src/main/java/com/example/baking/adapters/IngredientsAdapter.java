@@ -1,5 +1,6 @@
 package com.example.baking.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -27,8 +28,9 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public void onBindViewHolder(@NonNull IngredientsViewHolder holder, int position) {
         Ingredients ingredients  = ingredientsList.get(position);
-        holder.ingredientsItemListBinding.measureNQuantity.setText(ingredients.getMeasure()+" "+ingredients.getQuantity());
-        holder.ingredientsItemListBinding.ingredientTv.setText(ingredients.getIngredients());
+        holder.ingredientsItemListBinding.measureNQuantity.setText(ingredients.getQuantity()+" "+ingredients.getMeasure().toLowerCase());
+        Log.v("ingredients",""+ingredients.getIngredient());
+        holder.ingredientsItemListBinding.ingredientTv.setText(ingredients.getIngredient());
 
     }
 

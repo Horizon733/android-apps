@@ -1,16 +1,18 @@
 package com.example.baking.models;
 
-public class Ingredients {
+import java.io.Serializable;
+
+public class Ingredients implements Serializable {
     private double quantity;
     private String measure;
-    private String ingredients;
+    private String ingredient;
 
     public Ingredients(double quantity, String measure, String ingredients){
-        this.ingredients = ingredients;
+        this.ingredient = ingredients;
         this.quantity = quantity;
         this.measure = measure;
     }
     public double getQuantity(){ return this.quantity; }
     public String getMeasure(){ return this.measure; }
-    public String getIngredients(){ return this.ingredients; }
+    public String getIngredient(){ return this.ingredient; }
 }

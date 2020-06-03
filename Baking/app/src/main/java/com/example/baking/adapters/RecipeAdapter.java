@@ -19,6 +19,7 @@ import com.example.baking.MainActivity;
 import com.example.baking.R;
 import com.example.baking.StepsNIngredientsActivity;
 import com.example.baking.databinding.RecipeListItemBinding;
+import com.example.baking.models.Constants;
 import com.example.baking.models.Recipe;
 import com.example.baking.models.Steps;
 
@@ -56,7 +57,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, StepsNIngredientsActivity.class);
                 Bundle extras = new Bundle();
-                extras.putSerializable("ingredients",currentRecipe);
+                extras.putSerializable(Constants.RECIPE,currentRecipe);
                 intent.putExtras(extras);
                 mContext.startActivity(intent);
             }

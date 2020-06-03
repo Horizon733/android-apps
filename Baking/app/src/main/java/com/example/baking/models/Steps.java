@@ -1,6 +1,8 @@
 package com.example.baking.models;
 
-public class Steps {
+import java.io.Serializable;
+
+public class Steps implements Serializable {
     private int id;
     private String  shortDescription ;
     private String description;
