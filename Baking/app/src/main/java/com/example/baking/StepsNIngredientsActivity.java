@@ -22,7 +22,7 @@ public class StepsNIngredientsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps_n_ingredients);
-       Recipe recipe = (Recipe) getIntent().getSerializableExtra("steps");
+       Recipe recipe = (Recipe) getIntent().getSerializableExtra("ingredients");
         Log.e("steps",""+recipe.getIngredients().length);
         //CategoryAdapter categoryAdapter =new CategoryAdapter(this,getSupportFragmentManager(),steps,ingredients);
         //ViewPager viewPager = findViewById(R.id.viewpager);

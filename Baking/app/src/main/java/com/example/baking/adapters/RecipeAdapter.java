@@ -3,6 +3,7 @@ package com.example.baking.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +55,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, StepsNIngredientsActivity.class);
-                intent.putExtra("ingredients", (Serializable) currentRecipe);
+                Bundle extras = new Bundle();
+                extras.putSerializable("ingredients",currentRecipe);
+                intent.putExtras(extras);
                 mContext.startActivity(intent);
             }
         });
