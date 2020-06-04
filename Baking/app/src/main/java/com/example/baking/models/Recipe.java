@@ -8,21 +8,37 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Recipe implements Serializable {
-
+    private int id;
     private String name;
     private Ingredients[] ingredients;
     private Steps[] steps;
     private int servings;
 
-    public Recipe(String name,Ingredients[] ingredients, Steps[] steps, int servings){
+    public Recipe(int id, String name, Ingredients[] ingredients, Steps[] steps, int servings) {
+        this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
     }
 
-    public String getName(){ return this.name;}
-    public Ingredients[] getIngredients(){ return this.ingredients;}
-    public Steps[] getSteps(){ return this.steps; }
-    public int getServings(){ return this.servings;}
+    public int getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public Ingredients[] getIngredients() {
+        return this.ingredients;
+    }
+
+    public Steps[] getSteps() {
+        return this.steps;
+    }
+
+    public int getServings() {
+        return this.servings;
+    }
 }

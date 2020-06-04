@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class RecipeDetailFragment extends Fragment {
     SimpleExoPlayer mExoPlayer;
     static SimpleExoPlayerView playerView;
     static ImageView fullscreenButton;
+    static TextView shortDescriptionTv;
     boolean fullScreen = false;
 
     public RecipeDetailFragment() {
@@ -68,22 +70,21 @@ public class RecipeDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            this.mVideoUrl = bundle.getString("videoUrl");
-            this.mThumbnailUrl = bundle.getString("thumbnailUrl");
-            this.mDescription = bundle.getString("description");
-            this.mShortDescription = bundle.getString("shortDescription");
-            Log.e("Extras", "" + mVideoUrl);
-        }
-        if (savedInstanceState != null) {
             this.mVideoUrl = bundle.getString(Constants.VIDEO);
             this.mThumbnailUrl = bundle.getString(Constants.THUMBNAIL);
             this.mDescription = bundle.getString(Constants.DESCRIPTION);
             this.mShortDescription = bundle.getString(Constants.SHORT_DESCRIPTION);
         }
+        if (savedInstanceState != null) {
+            this.mVideoUrl = savedInstanceState.getString(Constants.VIDEO);
+            this.mThumbnailUrl = savedInstanceState.getString(Constants.THUMBNAIL);
+            this.mDescription = savedInstanceState.getString(Constants.DESCRIPTION);
+            this.mShortDescription = savedInstanceState.getString(Constants.SHORT_DESCRIPTION);
+        }
         View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
         playerView = rootView.findViewById(R.id.player);
         descriptionTv = rootView.findViewById(R.id.description_tv);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mShortDescription);
+        shortDescriptionTv = rootView.findViewById(R.id.short_description);
         fullScreenmode();
         return rootView;
     }
@@ -121,11 +122,8 @@ public class RecipeDetailFragment extends Fragment {
                     if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
                         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
                     }
-                    if (getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    } else {
-                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-                    }
+
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
@@ -143,13 +141,9 @@ public class RecipeDetailFragment extends Fragment {
                     if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
                         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
                     }
-                    if (getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                            || getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
-                            || getActivity().getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE) {
-                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    } else {
-                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-                    }
+
+                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
                     params.height = params.MATCH_PARENT;
@@ -166,7 +160,7 @@ public class RecipeDetailFragment extends Fragment {
         super.onResume();
 
         descriptionTv.setText(mDescription);
-
+        shortDescriptionTv.setText(mShortDescription);
         if (!TextUtils.isEmpty(mVideoUrl))
             initializerPlayer(Uri.parse(mVideoUrl));
         else if (!TextUtils.isEmpty(mThumbnailUrl)) {
@@ -177,6 +171,11 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if (mExoPlayer != null) {
             position = mExoPlayer.getCurrentPosition();
             playWhenReady = mExoPlayer.getPlayWhenReady();

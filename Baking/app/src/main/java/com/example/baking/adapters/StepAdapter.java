@@ -27,45 +27,46 @@ import java.util.List;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolder> {
     List<Steps> mSteps;
     Context mContext;
-    public StepAdapter(Context context, List<Steps> steps){
+
+    public StepAdapter(Context context, List<Steps> steps) {
         this.mSteps = steps;
         this.mContext = context;
     }
+
     @NonNull
     @Override
     public StepsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        StepsListItemBinding itemBinding = StepsListItemBinding.inflate(layoutInflater,parent,false);
+        StepsListItemBinding itemBinding = StepsListItemBinding.inflate(layoutInflater, parent, false);
         return new StepAdapter.StepsViewHolder(itemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StepsViewHolder holder, int position) {
-        final Steps steps =  mSteps.get(position);
-        holder.stepsListItemBinding.stepsBtn.setText((steps.getId())+1+". "+steps.getShortDescription());
+        final Steps steps = mSteps.get(position);
+        holder.stepsListItemBinding.stepsBtn.setText((steps.getId()) + 1 + ". " + steps.getShortDescription());
         holder.stepsListItemBinding.stepsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(StepsNIngredientsActivity.mTwoPane){
+                if (StepsNIngredientsActivity.mTwoPane) {
                     Bundle extras = new Bundle();
-                    extras.putString(Constants.VIDEO,steps.getVideoURL());
-                    extras.putString(Constants.THUMBNAIL,steps.getThumbnailURL());
-                    extras.putString(Constants.DESCRIPTION,steps.getDescription());
-                    extras.putString(Constants.SHORT_DESCRIPTION,steps.getShortDescription());
+                    extras.putString(Constants.VIDEO, steps.getVideoURL());
+                    extras.putString(Constants.THUMBNAIL, steps.getThumbnailURL());
+                    extras.putString(Constants.DESCRIPTION, steps.getDescription());
+                    extras.putString(Constants.SHORT_DESCRIPTION, steps.getShortDescription());
                     RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
                     recipeDetailFragment.setArguments(extras);
 
-                    FragmentManager fragmentManager = ((FragmentActivity)mContext).getSupportFragmentManager();
+                    FragmentManager fragmentManager = ((FragmentActivity) mContext).getSupportFragmentManager();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.steps_details,recipeDetailFragment)
+                            .replace(R.id.steps_details, recipeDetailFragment)
                             .commit();
-                }
-                else {
+                } else {
                     Intent intent = new Intent(mContext, RecipeDetailActivity.class);
-                    intent.putExtra(Constants.VIDEO,steps.getVideoURL());
-                    intent.putExtra(Constants.THUMBNAIL,steps.getThumbnailURL());
-                    intent.putExtra(Constants.DESCRIPTION,steps.getDescription());
-                    intent.putExtra(Constants.SHORT_DESCRIPTION,steps.getShortDescription());
+                    intent.putExtra(Constants.VIDEO, steps.getVideoURL());
+                    intent.putExtra(Constants.THUMBNAIL, steps.getThumbnailURL());
+                    intent.putExtra(Constants.DESCRIPTION, steps.getDescription());
+                    intent.putExtra(Constants.SHORT_DESCRIPTION, steps.getShortDescription());
                     mContext.startActivity(intent);
                 }
             }
@@ -74,17 +75,18 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolde
 
     @Override
     public int getItemCount() {
-       if(mSteps.size()==0 || mSteps == null){
-           return -1;
-       }
-       return mSteps.size();
+        if (mSteps.size() == 0 || mSteps == null) {
+            return -1;
+        }
+        return mSteps.size();
     }
 
-    public class StepsViewHolder extends RecyclerView.ViewHolder{
+    public class StepsViewHolder extends RecyclerView.ViewHolder {
         StepsListItemBinding stepsListItemBinding;
+
         public StepsViewHolder(@NonNull StepsListItemBinding itemBinding) {
             super(itemBinding.getRoot());
             this.stepsListItemBinding = itemBinding;
-    }
+        }
     }
 }

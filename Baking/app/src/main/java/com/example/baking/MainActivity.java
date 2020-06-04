@@ -30,27 +30,28 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdapter mAdapter;
     static List<Recipe> recipeList;
     static GridLayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = findViewById(R.id.recipe_list);
-        layoutManager = new GridLayoutManager(getApplicationContext(),1);
+        layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         layoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             recipeList = (List<Recipe>) savedInstanceState.getSerializable("recipe");
-            Log.e("saved",""+recipeList.size());
+            Log.e("saved", "" + recipeList.size());
             mAdapter = new RecipeAdapter(recipeList, MainActivity.this);
             mRecyclerView.setAdapter(mAdapter);
-        }
-        else {
+        } else {
             loadData();
-            Log.e("Not saved","not saved");
+            Log.e("Not saved", "not saved");
         }
 
     }
-    private void loadData(){
+
+    private void loadData() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
         GetRecipesData getRecipesData = retrofit.create(GetRecipesData.class);
         Call<List<Recipe>> call = getRecipesData.getRecipes();
@@ -58,14 +59,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 recipeList = response.body();
-                Log.e("List","Count "+recipeList.size());
+                Log.e("List", "Count " + recipeList.size());
                 mAdapter = new RecipeAdapter(recipeList, MainActivity.this);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-               Log.e("Error", String.valueOf(t.getCause()));
+                Log.e("Error", String.valueOf(t.getCause()));
             }
         });
     }
