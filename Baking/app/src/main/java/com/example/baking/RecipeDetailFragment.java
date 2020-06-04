@@ -166,6 +166,9 @@ public class RecipeDetailFragment extends Fragment {
         else if (!TextUtils.isEmpty(mThumbnailUrl)) {
             initializerPlayer(Uri.parse(mThumbnailUrl));
         }
+        else if(TextUtils.isEmpty(mVideoUrl) && TextUtils.isEmpty(mThumbnailUrl)){
+            playerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
