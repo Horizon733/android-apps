@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:id="@+id/steps_n_ingredients_fl"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view"
